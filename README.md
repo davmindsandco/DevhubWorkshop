@@ -9,6 +9,8 @@ Fork this project.
 Create an action with the yml file at .github/workflows/ci-pipeline.yml.
 This file already has the basic steps (install .net, package restore ect)
 
+In the application, .net 9 was used, so keep that in mind for the pipeline tasks.
+
 # Code setup
 1. Implement git version
 
@@ -29,11 +31,17 @@ https://github.com/GitTools/actions/blob/main/docs/examples/github/gitversion/ex
 
 2. Implement linting
 
-   You can use JetBrains.ReSharper.GlobalTools if you run a powershell script in your pipeline. <br><br>
-   Output the insepction to a jsonfile. <br><br>
-   In a seperate action, use the analyzation script found under .github/scripts to analyze the findings from the inspection
+   You can use JetBrains.ReSharper.GlobalTools if you run script in your pipeline. <br><br>
 
-3. Static code analysis
+   This can be done with this action: https://github.com/actions/github-script
+   
+   Output the insepction to a jsonfile. <br><br>
+   
+   In a seperate step, use the analyzation script found under .github/scripts to analyze the findings from the inspection
+
+   If you want a simpler approach, there is a specific github action for this: https://github.com/marketplace/actions/jetbrains-resharper-inspect-code
+
+4. Static code analysis
 
    Log into 1password. Find the SonarQube item. Click on website url and login with the 1password credentials.
    Create a new project.
@@ -43,7 +51,7 @@ https://github.com/GitTools/actions/blob/main/docs/examples/github/gitversion/ex
    Hint: Sonar token can be created here: ```User > My Account > Security```
 
 # Dependencies
-1. Create a sbom file
+1. Create an sbom file
 
    Create the sbomfile:
    https://github.com/CycloneDX/gh-dotnet-generate-sbom
@@ -57,7 +65,7 @@ https://github.com/GitTools/actions/blob/main/docs/examples/github/gitversion/ex
    https://github.com/DependencyTrack/gh-upload-sbom 
 
 
-3. Implement Dependabot
+2. Implement Dependabot
 
    Create a seperate yaml-file for another pipeline action. This is where you will implement dependabot. <br><br>
    You can set to run once every morning, night or on every pull request made on the Shoppingcart repo. <br><br>
