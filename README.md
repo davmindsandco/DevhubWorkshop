@@ -40,7 +40,7 @@ https://github.com/GitTools/actions/blob/main/docs/examples/github/gitversion/ex
 
    Name it something like: ```<your-initials>-shoppingCart``` <br><br>
    Follow the guide provided in SonarQube.
-   Hint: Sonar token can be created here: User > My Account > Security
+   Hint: Sonar token can be created here: ```User > My Account > Security```
 
 # Dependencies
 1. Create a sbom file
@@ -51,7 +51,7 @@ https://github.com/GitTools/actions/blob/main/docs/examples/github/gitversion/ex
    We need a server to push our sbom file to. <br><br>
    Download the latest docker-compose file for the server:
    
-   curl -LO https://dependencytrack.org/docker-compose.yml
+   ```curl -LO https://dependencytrack.org/docker-compose.yml```
 
    Once you have spun up this server locally, push your sbom file to your server in your pipeline: <br><br>
    https://github.com/DependencyTrack/gh-upload-sbom 
