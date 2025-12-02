@@ -2,18 +2,25 @@
 Here is a list of all actions in github: 
 https://github.com/marketplace?type=actions
 
+To get started:
 
-Create an action with the yml file at .github/workflows/ci-pipeline.yml
+Fork this project.
+
+Create an action with the yml file at .github/workflows/ci-pipeline.yml.
 This file already has the basic steps (install .net, package restore ect)
 
 # Code setup
 1. Implement git version
 
-   GitVersion automatically generates consistent semantic version numbers from your Git history, removing manual versioning and ensuring every build and artifact is uniquely and predictably versioned.
+GitVersion automatically generates consistent semantic version numbers from your Git history, removing manual versioning and ensuring every build and artifact is uniquely and predictably versioned.
 
-   Documentation: https://gitversion.net/docs/
-   
-   You can either chose to implement this through your pipeline or add as a nuget library to the ShoppingCart application
+ 
+There is 2 steps <br><br>
+First you need to set it up: <br><br>
+[https://gitversion.net/docs/](https://github.com/GitTools/actions/blob/main/docs/examples/github/gitversion/setup.md).
+
+Then you need to execute: <br><br>
+https://github.com/GitTools/actions/blob/main/docs/examples/github/gitversion/execute.md   
    
  
 # Code quality and testing
@@ -22,31 +29,55 @@ This file already has the basic steps (install .net, package restore ect)
 
 2. Implement linting
 
-   Hint to this task:
-   You can use JetBrains.ReSharper.GlobalTools if you run a powershell script in your pipeline
-   Output the insepction to a jsonfile
+   You can use JetBrains.ReSharper.GlobalTools if you run a powershell script in your pipeline. <br><br>
+   Output the insepction to a jsonfile. <br><br>
    In a seperate action, use the analyzation script found under .github/scripts to analyze the findings from the inspection
 
 3. Static code analysis
 
    Log into 1password. Find the SonarQube item. Click on website url and login with the 1password credentials.
-   Create a new project with your own credentials.
+   Create a new project.
+
+   Name it something like: ```<your-initials>-shoppingCart``` <br><br>
    Follow the guide provided in SonarQube.
    Hint: Sonar token can be created here: User > My Account > Security
 
 # Dependencies
-TODO: write dependecies task.
-Test the setup with creating sbom file and push it to the server
+1. Create a sbom file
 
+   Create the sbomfile:
+   https://github.com/CycloneDX/gh-dotnet-generate-sbom
+   
+   We need a server to push our sbom file to. <br><br>
+   Download the latest docker-compose file for the server:
+   
+   curl -LO https://dependencytrack.org/docker-compose.yml
+
+   Once you have spun up this server locally, push your sbom file to your server in your pipeline: <br><br>
+   https://github.com/DependencyTrack/gh-upload-sbom 
+
+
+3. Implement Dependabot
+
+   Create a seperate yaml-file for another pipeline action. This is where you will implement dependabot. <br><br>
+   You can set to run once every morning, night or on every pull request made on the Shoppingcart repo. <br><br>
+   This is to ensure your dependecies is up to date.
+
+   Documentation: https://docs.github.com/en/code-security/dependabot/working-with-dependabot/automating-dependabot-with-github-actions
+   
+   
 # Security scanning 
 1. Implement Git leaks
 
-   You can use github's own action for this: https://github.com/marketplace/actions/gitleaks .
+   You can use github's own action for this: https://github.com/marketplace/actions/gitleaks. <br><br>
    If you find any vulnerabilties in the ShoppingCart application - fix them!
    
-3. Implement Zap Scan
+2. Implement Zap Scan
 
-   Google something like "github actions zap scanner".
-   There should be a couple of different free to use zap scanners.
+   Congratulations. You made it to the final boss!
+
+   Here is how to implement the zap scanner:
+
+   https://github.com/zaproxy/action-full-scan
 
    
