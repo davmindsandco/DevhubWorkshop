@@ -25,46 +25,55 @@ jobs:
     
     permissions:
       security-events: write
+      
+#  sonar-qube:
+#    runs-on: windows-latest
+#    steps:
+    #      # SonarQube
+    #      - name: Cache SonarQube packages
+    #        uses: actions/cache@v4
+    #        with:
+    #          path: ${{ runner.temp }}\cache
+    #          key: ${{ runner.os }}-sonar
+    #          restore-keys: ${{ runner.os }}-sonar
+    #
+    #      - name: Cache SonarQube scanner
+    #        id: cache-sonar-scanner
+    #        uses: actions/cache@v4
+    #        with:
+    #          path: ${{ runner.temp }}\scanner
+    #          key: ${{ runner.os }}-sonar-scanner
+    #          restore-keys: ${{ runner.os }}-sonar-scanner
+    #
+    #      - name: Install SonarQube scanner
+    #        if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
+    #        shell: powershell
+    #        run: |
+    #          New-Item -Path ${{ runner.temp }}\scanner -ItemType Directory
+    #          dotnet tool update dotnet-sonarscanner --tool-path ${{ runner.temp }}\scanner
+    #
+    #      - name: Build and analyze
+    #        shell: powershell
+    #        run: |
+    #          ${{ runner.temp }}\scanner\dotnet-sonarscanner begin /k:"dav--shoppingCart" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="${{ secrets.SONAR_HOST_URL }}"
+    #          dotnet build
+    #          ${{ runner.temp }}\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
   
   build:
     runs-on: ubuntu-latest
     steps:
-#      # SonarQube
-#      - name: Cache SonarQube packages
-#        uses: actions/cache@v4
-#        with:
-#          path: ${{ runner.temp }}\cache
-#          key: ${{ runner.os }}-sonar
-#          restore-keys: ${{ runner.os }}-sonar
-#
-#      - name: Cache SonarQube scanner
-#        id: cache-sonar-scanner
-#        uses: actions/cache@v4
-#        with:
-#          path: ${{ runner.temp }}\scanner
-#          key: ${{ runner.os }}-sonar-scanner
-#          restore-keys: ${{ runner.os }}-sonar-scanner
-#
-#      - name: Install SonarQube scanner
-#        if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
-#        shell: powershell
-#        run: |
-#          New-Item -Path ${{ runner.temp }}\scanner -ItemType Directory
-#          dotnet tool update dotnet-sonarscanner --tool-path ${{ runner.temp }}\scanner
-#
-#      - name: Build and analyze
-#        shell: powershell
-#        run: |
-#          ${{ runner.temp }}\scanner\dotnet-sonarscanner begin /k:"dav--shoppingCart" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="${{ secrets.SONAR_HOST_URL }}"
-#          dotnet build
-#          ${{ runner.temp }}\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
-      
       
       # Checkout source
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0  # needed for git versioning
+
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v6.0.0
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
 
       - name: Install GitVersion
         uses: gittools/actions/gitversion/setup@v4.2.0
