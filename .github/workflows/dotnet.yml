@@ -45,4 +45,4 @@ jobs:
         
       # Tests
       - name: Test with the dotnet CLI
-        run: dotnet test src\ShoppingCart.Tests\ShoppingCart.Tests.csproj --no-build  
+        run: dotnet test src/ShoppingCart.Tests/ShoppingCart.Tests.csproj --no-build  
