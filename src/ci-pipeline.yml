@@ -19,7 +19,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # needed for git versioning logic
+          fetch-depth: 0  # needed for git versioning
 
       - name: Install GitVersion
         uses: gittools/actions/gitversion/setup@v4.2.0
