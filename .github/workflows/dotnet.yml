@@ -61,10 +61,8 @@ jobs:
       # Tests
       - name: Test with the dotnet CLI
         run: dotnet test ${{ env.solutionPath }} --no-build 
-  
-  sbom:
-    runs-on: ubuntu-latest
-    steps:
+       
+      # SBOM
       - name: Generate XML SBOM
         uses: CycloneDX/gh-dotnet-generate-sbom@v1
         with:
@@ -75,4 +73,18 @@ jobs:
         with:
           path: ${{ env.solutionPath }}
           json: true
+  
+#  sbom:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Generate XML SBOM
+#        uses: CycloneDX/gh-dotnet-generate-sbom@v1
+#        with:
+#          path: ${{ env.solutionPath }}
+#
+#      - name: Generate JSON SBOM
+#        uses: CycloneDX/gh-dotnet-generate-sbom@master
+#        with:
+#          path: ${{ env.solutionPath }}
+#          json: true
         
