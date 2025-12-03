@@ -68,14 +68,13 @@ jobs:
         uses: CycloneDX/gh-dotnet-generate-sbom@master
         with:
           path: ${{ env.solutionPath }}
-          json: true
       
       - name: Sending SBOM to Server
         uses: DependencyTrack/gh-upload-sbom@v3
         with:
           serverHostname: 'http://4.180.58.159:8080'
           apiKey: ${{ env.apiKey }}
-          projectName: 'Best Project'
+          projectName: 'BestTeam'
           projectVersion: 'master'
-          bomFilename: "/bom.json"
+          bomFilename: "/bom.xml"
           autoCreate: true
