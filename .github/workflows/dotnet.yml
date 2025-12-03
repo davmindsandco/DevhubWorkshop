@@ -8,6 +8,7 @@ on:
 
 env:
   solutionPath: "src/ShoppingCart.sln"
+  apiKey: "odt_4IsmsIxm_yusTBdGzl3vXbexMEAlNmNPoQGBxS7gi"
 
 jobs:
   inspect-code:
@@ -63,28 +64,18 @@ jobs:
         run: dotnet test ${{ env.solutionPath }} --no-build 
        
       # SBOM
-      - name: Generate XML SBOM
-        uses: CycloneDX/gh-dotnet-generate-sbom@v1
-        with:
-          path: ${{ env.solutionPath }}
-
       - name: Generate JSON SBOM
         uses: CycloneDX/gh-dotnet-generate-sbom@master
         with:
           path: ${{ env.solutionPath }}
           json: true
-  
-#  sbom:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Generate XML SBOM
-#        uses: CycloneDX/gh-dotnet-generate-sbom@v1
-#        with:
-#          path: ${{ env.solutionPath }}
-#
-#      - name: Generate JSON SBOM
-#        uses: CycloneDX/gh-dotnet-generate-sbom@master
-#        with:
-#          path: ${{ env.solutionPath }}
-#          json: true
-        
+      
+      - name: Sending SBOM to Server
+        uses: DependencyTrack/gh-upload-sbom@v3
+        with:
+          serverHostname: 'http://4.180.58.159:8080'
+          apiKey: ${{ env.apiKey }}
+          projectName: 'Best Project'
+          projectVersion: 'master'
+          bomFilename: "/bom.json"
+          autoCreate: true
